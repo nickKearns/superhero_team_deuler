@@ -17,19 +17,59 @@ class Hero(object):
         self.starting_health = starting_health
         self.current_health = starting_health
 
+
+    def fight(self, opponent):
+        while self.is_alive() and opponent.is_alive():
+            if self.abilities or opponent.abilities:
+                self.take_damage(opponent.attack())
+                opponent.take_damage(self.attack())
+            else:
+                print("DRAW!")
+                continue
+        if self.current_health <= 0:
+            print(opponent.name + " is the winner!")
+        else:
+            print(self.name + " is the winner!")
+            
     def add_ability(self, ability):
         ''' Add ability to abilities list '''
         self.abilities.append(ability)
 
+    def add_armor(self, armor):
+        ''' add armor to armor list '''
+        self.armors.append(armor)
 
+    def take_damage(self, damage):
+        if damage - self.defend() > 0:
+            self.current_health -= (damage - self.defend())
+            print(self.name + " current health: " + str(self.current_health))
+        else:
+            print("The attack was completely blocked")
+
+
+
+
+    def defend(self):
+        ''' add up all the total blocks from all the armors '''
+        total_block = 0
+        for block in self.armors:
+            total_block += block.block()
+        return total_block
 
     def attack(self):
+        ''' add up the total attacks from all the abilities '''
         total_damage = 0
         for ability in self.abilities:
             total_damage += ability.attack()
         return total_damage
 
 
+    def is_alive(self):
+        '''checks if there is health left for the hero'''
+        if self.current_health <= 0:
+            return False
+        else:
+            return True
 
 
 
@@ -65,15 +105,24 @@ class Armor(object):
 
 
 if __name__ == '__main__':
-    my_hero = Hero("test hero", 100)
-    print(my_hero.name)
-    print(my_hero.starting_health)
-    test_ability = Ability("debug ability", 50)
-    test_ability2 = Ability("debug ability 2", 30)
+    my_hero = Hero("Superman", 200)
+    their_hero = Hero("Batman", 200)
+    # print(my_hero.name)
+    # print(my_hero.starting_health)
+    test_ability = Ability("punch", 50)
+    test_ability2 = Ability("kick", 30)
+    test_armor = Armor('armor', 10)
+    test_armor2 = Armor('armor 2', 12)
     my_hero.add_ability(test_ability)
-    #print(my_hero.abilities)
     my_hero.add_ability(test_ability2)
-    print(my_hero.attack())
+    my_hero.add_armor(test_armor)
+    my_hero.add_armor(test_armor2)
+    their_hero.add_ability(test_ability)
+    their_hero.add_ability(test_ability2)
+    their_hero.add_armor(test_armor)
+    their_hero.add_armor(test_armor2)
+    my_hero.fight(their_hero)
+    
 
 
 
