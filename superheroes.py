@@ -19,6 +19,7 @@ class Hero(object):
 
 
     def fight(self, opponent):
+        ''' have one hero instance fight another hero instance '''
         while self.is_alive() and opponent.is_alive():
             if self.abilities or opponent.abilities:
                 self.take_damage(opponent.attack())
@@ -30,7 +31,7 @@ class Hero(object):
             print(opponent.name + " is the winner!")
         else:
             print(self.name + " is the winner!")
-            
+
     def add_ability(self, ability):
         ''' Add ability to abilities list '''
         self.abilities.append(ability)
@@ -45,6 +46,7 @@ class Hero(object):
             print(self.name + " current health: " + str(self.current_health))
         else:
             print("The attack was completely blocked")
+            print(self.name + " current health: " + str(self.current_health))
 
 
 
@@ -89,6 +91,20 @@ class Ability(object):
         return random.randint(0, self.max_damage)
 
 
+
+class Weapon(Ability):
+    def __init__(self, name, max_damage):
+        super().__init__(name, max_damage)
+    def attack(self):
+        """  This method returns a random value
+        between one half to the full attack power of the weapon.
+        """
+        multiplier = random.uniform(1.0, 2.0)
+        return self.max_damage // multiplier
+
+
+
+
 class Armor(object):
     def __init__(self, name, max_block):
         '''Instantiate instance properties.
@@ -113,15 +129,17 @@ if __name__ == '__main__':
     test_ability2 = Ability("kick", 30)
     test_armor = Armor('armor', 10)
     test_armor2 = Armor('armor 2', 12)
-    my_hero.add_ability(test_ability)
-    my_hero.add_ability(test_ability2)
-    my_hero.add_armor(test_armor)
-    my_hero.add_armor(test_armor2)
-    their_hero.add_ability(test_ability)
-    their_hero.add_ability(test_ability2)
-    their_hero.add_armor(test_armor)
-    their_hero.add_armor(test_armor2)
-    my_hero.fight(their_hero)
+    test_weapon = Weapon("test_weapon", 80)
+    print(test_weapon.attack())
+    # my_hero.add_ability(test_ability)
+    # my_hero.add_ability(test_ability2)
+    # my_hero.add_armor(test_armor)
+    # my_hero.add_armor(test_armor2)
+    # their_hero.add_ability(test_ability)
+    # their_hero.add_ability(test_ability2)
+    # their_hero.add_armor(test_armor)
+    # their_hero.add_armor(test_armor2)
+    # my_hero.fight(their_hero)
     
 
 
