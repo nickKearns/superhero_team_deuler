@@ -1,5 +1,28 @@
 import random
 
+
+class Hero(object):
+    def __init__(self, name, starting_health):
+        '''Instance properties:
+          abilities: List
+          armors: List
+          name: String
+          starting_health: Integer
+          current_health: Integer
+      '''
+        
+        self.abilities = []
+        self.armors = []
+        self.name = name
+        self.starting_health = starting_health
+        self.current_health = starting_health
+
+
+
+
+
+
+
 class Ability(object):
     def __init__(self, name, max_damage):
         '''Create Instance Variables:
@@ -31,9 +54,7 @@ class Armor(object):
 
 
 if __name__ == '__main__':
-    ability = Ability("debug ability", 20)
-    print(ability.name)
-    print(ability.attack())
-    armor = Armor("debug armor", 20)
-    print(armor.block())
+    my_hero = Hero("test hero", 100)
+    print(my_hero.name)
+    print(my_hero.starting_health)
 
