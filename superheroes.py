@@ -17,6 +17,17 @@ class Hero(object):
         self.starting_health = starting_health
         self.current_health = starting_health
 
+    def add_ability(self, ability):
+        ''' Add ability to abilities list '''
+        self.abilities.append(ability)
+
+
+
+    def attack(self):
+        total_damage = 0
+        for ability in self.abilities:
+            total_damage += ability.attack()
+        return total_damage
 
 
 
@@ -57,4 +68,12 @@ if __name__ == '__main__':
     my_hero = Hero("test hero", 100)
     print(my_hero.name)
     print(my_hero.starting_health)
+    test_ability = Ability("debug ability", 50)
+    test_ability2 = Ability("debug ability 2", 30)
+    my_hero.add_ability(test_ability)
+    #print(my_hero.abilities)
+    my_hero.add_ability(test_ability2)
+    print(my_hero.attack())
+
+
 
