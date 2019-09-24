@@ -105,6 +105,9 @@ class Weapon(Ability):
 
 
 
+
+
+
 class Armor(object):
     def __init__(self, name, max_block):
         '''Instantiate instance properties.
@@ -118,6 +121,35 @@ class Armor(object):
         ''' Return a random value between 0 and the initialized max_block strength. '''
 
         return random.randint(0, self.max_block)
+
+
+
+class Team(self):
+    def __init__(self, name):
+        self.team_name = name
+        self.heroes = []
+    def remove_hero(self, name):
+        success = False
+        for hero in self.heroes:
+            if hero.name == name:
+                heroes.remove(hero)
+                success = True
+        if success:
+            return 1
+        else:
+            return 0
+    def view_all_heroes(self):
+        for hero in self.heroes:
+            print(hero.name)
+    def add_hero(self, new_hero):
+        self.heroes.append(new_hero)
+
+    
+
+
+
+
+
 
 
 if __name__ == '__main__':
