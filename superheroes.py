@@ -2,7 +2,7 @@ import random
 
 
 class Hero(object):
-    def __init__(self, name, starting_health):
+    def __init__(self, name):
         '''Instance properties:
           abilities: List
           armors: List
@@ -14,8 +14,8 @@ class Hero(object):
         self.abilities = []
         self.armors = []
         self.name = name
-        self.starting_health = starting_health
-        self.current_health = starting_health
+        self.starting_health =  200
+        self.current_health = 200
 
 
     def fight(self, opponent):
@@ -124,15 +124,15 @@ class Armor(object):
 
 
 
-class Team(self):
+class Team(object):
     def __init__(self, name):
-        self.team_name = name
+        self.name = name
         self.heroes = []
     def remove_hero(self, name):
         success = False
         for hero in self.heroes:
             if hero.name == name:
-                heroes.remove(hero)
+                self.heroes.remove(hero)
                 success = True
         if success:
             return 1
