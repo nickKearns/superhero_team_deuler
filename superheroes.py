@@ -16,6 +16,14 @@ class Hero(object):
         self.name = name
         self.starting_health =  200
         self.current_health = 200
+        self.kills = 0
+        self.deaths = 0
+
+    def add_kills(self, num_kills):
+        self.kills += num_kills
+
+    def add_deaths(self, num_deaths):
+        self.deaths += num_deaths
 
 
     def fight(self, opponent):
@@ -26,12 +34,18 @@ class Hero(object):
                 opponent.take_damage(self.attack())
             else:
                 print("DRAW!")
+                return 0
                 continue
         if self.current_health <= 0:
             print(opponent.name + " is the winner!")
+            opponent.add_kills(1)
+            self.add_deaths(1)
+            return self.name
         else:
             print(self.name + " is the winner!")
-
+            self.add_kills(1)
+            opponent.add_deaths(1)
+            return opponent.name
     def add_ability(self, ability):
         ''' Add ability to abilities list '''
         self.abilities.append(ability)
@@ -99,8 +113,7 @@ class Weapon(Ability):
         """  This method returns a random value
         between one half to the full attack power of the weapon.
         """
-        multiplier = random.uniform(1.0, 2.0)
-        return self.max_damage // multiplier
+        return random.randint(self.max_damage//2, self.max_damage)
 
 
 
@@ -143,6 +156,28 @@ class Team(object):
             print(hero.name)
     def add_hero(self, new_hero):
         self.heroes.append(new_hero)
+    def attack(self, other_team):
+        ''' Battle each team against each other.'''
+        while self.heroes and other_team.heroes:
+            hero_1 = random.choice(self.heroes)
+            hero_2 = random.choice(other_team.heroes)
+            if hero_1.is_alive() and hero_2.is_alive():
+                hero_1.fight(hero_2)
+            
+    def revive_heroes(self, health=200):
+        ''' Reset all heroes health to starting_health'''
+        for hero in self.heroes:
+            hero.current_health = health
+
+    def stats(self):
+        '''Print team statistics'''
+        for hero in self.heroes:
+            ratio = hero.kills / hero.deaths
+            print(hero.name + "'s ratio is: " + ratio)
+
+
+            
+        
 
     
 
@@ -153,8 +188,9 @@ class Team(object):
 
 
 if __name__ == '__main__':
-    my_hero = Hero("Superman", 200)
-    their_hero = Hero("Batman", 200)
+    my_hero = Hero("Superman")
+    their_hero = Hero("Batman")
+    test_hero1 = Hero("Aquaman")
     # print(my_hero.name)
     # print(my_hero.starting_health)
     test_ability = Ability("punch", 50)
@@ -162,16 +198,25 @@ if __name__ == '__main__':
     test_armor = Armor('armor', 10)
     test_armor2 = Armor('armor 2', 12)
     test_weapon = Weapon("test_weapon", 80)
-    print(test_weapon.attack())
-    # my_hero.add_ability(test_ability)
-    # my_hero.add_ability(test_ability2)
-    # my_hero.add_armor(test_armor)
-    # my_hero.add_armor(test_armor2)
-    # their_hero.add_ability(test_ability)
-    # their_hero.add_ability(test_ability2)
-    # their_hero.add_armor(test_armor)
-    # their_hero.add_armor(test_armor2)
-    # my_hero.fight(their_hero)
+    #print(test_weapon.attack())
+    my_hero.add_ability(test_ability)
+    my_hero.add_ability(test_ability2)
+    my_hero.add_armor(test_armor)
+    my_hero.add_armor(test_armor2)
+    test_hero1.add_ability(test_ability)
+    test_hero1.add_ability(test_ability2)
+    test_hero1.add_armor(test_armor)
+    test_hero1.add_armor(test_armor2)
+    their_hero.add_ability(test_ability)
+    their_hero.add_ability(test_ability2)
+    their_hero.add_armor(test_armor)
+    their_hero.add_armor(test_armor2)
+    team1 = Team('Team1')
+    team2 = Team('Team2')
+    team1.add_hero(my_hero)
+    team1.add_hero(test_hero1)
+    team2.add_hero(their_hero)
+    team1.attack(team2)
     
 
 
