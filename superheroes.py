@@ -2,7 +2,7 @@ import random
 
 
 class Hero(object):
-    def __init__(self, name):
+    def __init__(self, name, starting_health=100):
         '''Instance properties:
           abilities: List
           armors: List
@@ -14,8 +14,8 @@ class Hero(object):
         self.abilities = []
         self.armors = []
         self.name = name
-        self.starting_health =  200
-        self.current_health = 200
+        self.starting_health =  starting_health
+        self.current_health = starting_health
         self.kills = 0
         self.deaths = 0
 
@@ -49,6 +49,11 @@ class Hero(object):
     def add_ability(self, ability):
         ''' Add ability to abilities list '''
         self.abilities.append(ability)
+
+
+    def add_weapon(self, weapon):
+        '''Add weapon to self.abilities'''
+        self.abilities.append(weapon)
 
     def add_armor(self, armor):
         ''' add armor to armor list '''
@@ -152,6 +157,7 @@ class Team(object):
         else:
             return 0
     def view_all_heroes(self):
+        ''' display the names of each hero on the team '''
         for hero in self.heroes:
             print(hero.name)
     def add_hero(self, new_hero):
@@ -164,10 +170,10 @@ class Team(object):
             if hero_1.is_alive() and hero_2.is_alive():
                 hero_1.fight(hero_2)
             
-    def revive_heroes(self, health=200):
+    def revive_heroes(self, health=100):
         ''' Reset all heroes health to starting_health'''
         for hero in self.heroes:
-            hero.current_health = health
+            hero.current_health = hero.starting_health
 
     def stats(self):
         '''Print team statistics'''
@@ -177,7 +183,52 @@ class Team(object):
 
 
             
+
+class Arena:
+    def __init__(self):
+        self.team_one: None
+        self.team_two: None
+
+
+    def create_ability(self):
+        name = input("Please enter the name of the ability.\n")
+        max_damage = input("Please enter the maximum damage of the ability.\n")
+        new_ability = Ability(name, max_damage)
+        return new_ability
+
+    def create_weapon(self):
+        name = input("Please enter the name of the weapon.\n")   
+        max_damage = input("Please enter the maximum damage of the weapon.\n")
+        new_weapon = Weapon(name, max_damage)
+        return new_weapon
+
+    def create_armor(self):
+        name = input("Please enter the name of the armor.\n")
+        max_block = input("Please enter the maximum block of the armor\n.")
+        new_armor = Armor(name, max_block)
+        return new_armor
+
+    def create_hero(self):
+        name = input("Please enter the name of the hero.\n")
+        starting_health = input("Please enter the starting health of the hero\n")
+        new_hero = Hero(name, starting_health)
+        return new_hero
+
+    def build_team_one(self):
+        num_heroes = input("How many heroes would you like on team one?\n")
+        team_1 = Team(input("What would you like the team name to be?\n"))
+        for i in num_heroes:
+            team1.heroes.append(self.create_hero())
         
+    def build_team_two(self):
+        num_heroes = input("How many heroes would you like on team two?\n")
+        team_2 = Team(input("What would you like the team name to be?\n"))
+        for i in num_heroes:
+            team2.heroes.append(self.create_hero())
+
+
+
+            
 
     
 
