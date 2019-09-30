@@ -173,7 +173,8 @@ class Team(object):
     def revive_heroes(self, health=100):
         ''' Reset all heroes health to starting_health'''
         for hero in self.heroes:
-            hero.current_health = hero.starting_health
+            if not hero.is_alive():
+                hero.current_health = hero.starting_health
 
     def stats(self):
         '''Print team statistics'''
@@ -212,20 +213,49 @@ class Arena:
         name = input("Please enter the name of the hero.\n")
         starting_health = input("Please enter the starting health of the hero\n")
         new_hero = Hero(name, starting_health)
+        num_abilities = int(input("How many abilities would you like to add?"))
+        for i in range(0, num_abilities):
+            new_hero.add_ability(self.create_ability())
+        num__weapons = int(input("How many weapons would you like to add?"))
+        for i in range(0, num__weapons):
+            new_hero.add_weapon(self.create_weapon())
+        num_armor = int(input("How many armors would you like to add?"))
+        for i in range(0, num_armor):
+            new_hero.add_armor(self.create_armor())
         return new_hero
 
     def build_team_one(self):
         num_heroes = input("How many heroes would you like on team one?\n")
-        team_1 = Team(input("What would you like the team name to be?\n"))
-        for i in num_heroes:
-            team1.heroes.append(self.create_hero())
+        self.team_one = Team(input("What would you like the team name to be?\n"))
+        for i in range(0, num_heroes):
+            self.team_one.heroes.append(self.create_hero())
         
     def build_team_two(self):
         num_heroes = input("How many heroes would you like on team two?\n")
-        team_2 = Team(input("What would you like the team name to be?\n"))
-        for i in num_heroes:
-            team2.heroes.append(self.create_hero())
+        self_team_two = Team(input("What would you like the team name to be?\n"))
+        for i in range(0, num_heroes):
+            self.team_two.heroes.append(self.create_hero())
 
+    def team_battle(self):
+        self.team_one.attack(self.team_two)
+
+
+    def show_stats(self):
+        team_one_total_kills = 0
+        team_one_total_deaths = 0
+        team_two_total_kills = 0
+        team_two_total_deaths = 0
+        for hero in self.team_one.heroes:
+            team_one_total_kills += hero.kills
+            team_one_total_deaths += hero.deaths
+        for hero in self.team_two.heroes:
+            team_two_total_kills += hero.kills
+            team_two_total_deaths += hero.deaths
+        
+        team_one_ratio = team_one_total_kills / team_one_total_deaths
+        team_two_ratio = team_two_total_kills / team_two_total_deaths
+        print("Team one's ratio: " + team_one_ratio)
+        print("Team two's ratio: " + team_two_ratio)
 
 
             
