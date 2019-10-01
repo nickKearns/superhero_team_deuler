@@ -17,7 +17,7 @@ class Hero(object):
         self.starting_health =  starting_health
         self.current_health = starting_health
         self.kills = 0
-        self.deaths = 0
+        self.deaths = 1
 
     def add_kills(self, num_kills):
         self.kills += num_kills
@@ -29,27 +29,21 @@ class Hero(object):
     def fight(self, opponent):
         ''' have one hero instance fight another hero instance '''
         game_over = False
-        while self.is_alive() and opponent.is_alive() and game_over == False:
+        while self.is_alive() and opponent.is_alive():
             if self.abilities or opponent.abilities:
                 self.take_damage(opponent.attack())
                 opponent.take_damage(self.attack())
             else:
                 print("DRAW!")
-                return 0
-                game_over = False
         if self.current_health <= 0:
             print(opponent.name + " is the winner!")
             opponent.add_kills(1)
             self.add_deaths(1)
-            game_over = False
-            return self.name
             
         else:
             print(self.name + " is the winner!")
             self.add_kills(1)
             opponent.add_deaths(1)
-            game_over = False
-            return opponent.name
         
     def add_ability(self, ability):
         ''' Add ability to abilities list '''
@@ -169,12 +163,12 @@ class Team(object):
         self.heroes.append(new_hero)
     def attack(self, other_team):
         ''' Battle each team against each other.'''
-        while self.heroes and other_team.heroes:
-            hero_1 = random.choice(self.heroes)
-            hero_2 = random.choice(other_team.heroes)
-            if hero_1.is_alive() and hero_2.is_alive():
-                hero_1.fight(hero_2)
-            
+        
+        hero_1 = random.choice(self.heroes)
+        hero_2 = random.choice(other_team.heroes)
+        if hero_1.is_alive() and hero_2.is_alive():
+            hero_1.fight(hero_2)
+        
     def revive_heroes(self, health=100):
         ''' Reset all heroes health to starting_health'''
         for hero in self.heroes:
@@ -185,15 +179,15 @@ class Team(object):
         '''Print team statistics'''
         for hero in self.heroes:
             ratio = hero.kills / hero.deaths
-            print(hero.name + "'s ratio is: " + ratio)
+            print(hero.name + "'s ratio is: " + str(ratio))
 
 
             
 
 class Arena:
     def __init__(self):
-        self.team_one: None
-        self.team_two: None
+        self.team_one: Team
+        self.team_two: Team
 
 
     def create_ability(self):
@@ -259,8 +253,8 @@ class Arena:
         
         team_one_ratio = team_one_total_kills / team_one_total_deaths
         team_two_ratio = team_two_total_kills / team_two_total_deaths
-        print("Team one's ratio: " + team_one_ratio)
-        print("Team two's ratio: " + team_two_ratio)
+        print("Team one's ratio: " + str(team_one_ratio))
+        print("Team two's ratio: " + str(team_two_ratio))
 
 
             
@@ -274,40 +268,24 @@ class Arena:
 
 
 if __name__ == '__main__':
-    # my_hero = Hero("Superman")
-    # their_hero = Hero("Batman")
-    # test_hero1 = Hero("Aquaman")
-    # # print(my_hero.name)
-    # # print(my_hero.starting_health)
-    # test_ability = Ability("punch", 50)
-    # test_ability2 = Ability("kick", 30)
-    # test_armor = Armor('armor', 10)
-    # test_armor2 = Armor('armor 2', 12)
-    # test_weapon = Weapon("test_weapon", 80)
-    # #print(test_weapon.attack())
-    # my_hero.add_ability(test_ability)
-    # my_hero.add_ability(test_ability2)
-    # my_hero.add_armor(test_armor)
-    # my_hero.add_armor(test_armor2)
-    # test_hero1.add_ability(test_ability)
-    # test_hero1.add_ability(test_ability2)
-    # test_hero1.add_armor(test_armor)
-    # test_hero1.add_armor(test_armor2)
-    # their_hero.add_ability(test_ability)
-    # their_hero.add_ability(test_ability2)
-    # their_hero.add_armor(test_armor)
-    # their_hero.add_armor(test_armor2)
-    # team1 = Team('Team1')
-    # team2 = Team('Team2')
-    # team1.add_hero(my_hero)
-    # team1.add_hero(test_hero1)
-    # team2.add_hero(their_hero)
-    # team1.attack(team2)
+    game_is_running = True 
     arena = Arena()
     arena.build_team_one()
     arena.build_team_two()
-    arena.team_battle()
-    arena.show_stats()
+    while game_is_running:
+
+        arena.team_battle()
+        arena.show_stats()
+        play_again = input("Play Again? Y or N: ")
+
+        #Check for Player Input
+        if play_again.lower() == "n":
+            game_is_running = False
+
+        else:
+            #Revive heroes to play again
+            arena.team_one.revive_heroes()
+            arena.team_two.revive_heroes()
     
 
 
